@@ -6,13 +6,13 @@ use App\Joke;
 // composer require laracasts/testdummy
 use Laracasts\TestDummy\Factory as TestDummy;
 
-class {{class}} extends Seeder
+class JokesTableSeeder extends Seeder
 {
     public function run()
     {
     	//Faker object to load the data
         $faker = Faker\Factory::create();
-        
+
         foreach (range(1,30) as $index) 
         {
         	Joke::create([

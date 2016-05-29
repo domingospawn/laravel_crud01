@@ -6,7 +6,7 @@ use App\User;
 // composer require laracasts/testdummy
 use Laracasts\TestDummy\Factory as TestDummy;
 
-class {{class}} extends Seeder
+class UsersTableSeeder extends Seeder
 {
     public function run()
     {
