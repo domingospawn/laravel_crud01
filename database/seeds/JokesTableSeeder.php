@@ -3,17 +3,18 @@
 use Illuminate\Database\Seeder;
 use App\Joke;
 
-// composer require laracasts/testdummy
-use Laracasts\TestDummy\Factory as TestDummy;
-
 class JokesTableSeeder extends Seeder
 {
+    /**
+    * Run the database seeds
+    * @return void
+    **/
     public function run()
     {
     	//Faker object to load the data
         $faker = Faker\Factory::create();
 
-        foreach (range(1,30) as $index) 
+        foreach (range(1,60) as $index) 
         {
         	Joke::create([
         		'body' => $faker->paragraph($nbSentences = 3),

@@ -14,7 +14,7 @@ class CreateJakesTable extends Migration
     {
         Schema::create('jokes', function(Blueprint $table){
             $table->increments('id');
-            $table->text('joke');
+            $table->text('body');
             $table->integer('user_id');
             $table->timestamps();
         });

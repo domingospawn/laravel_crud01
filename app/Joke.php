@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Joke extends Model
 {
-    protected $fillable = ['body', 'user_id'];
+	/**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+    	'body', 'user_id'
+    ];
 }
