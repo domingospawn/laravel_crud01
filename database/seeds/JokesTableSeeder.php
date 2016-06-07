@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Joke;
+use App\User;
 
 class JokesTableSeeder extends Seeder
 {
@@ -18,7 +19,7 @@ class JokesTableSeeder extends Seeder
         {
         	Joke::create([
         		'body' => $faker->paragraph($nbSentences = 3),
-        		'user_id' => $faker->numberBetween($min =1, $max = 5)
+        		'user_id' => $faker->numberBetween($min =1, $max = 10)
         	]);
         }
     }

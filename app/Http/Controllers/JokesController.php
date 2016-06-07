@@ -20,8 +20,11 @@ class JokesController extends Controller
 		return [
 			'joke_id' => $joke['id'],
 			'joke' => $joke['body'],
-//          'submitted_by' => $joke['user_id']
-            'submitted_by' => var_dump($joke['user']);
+            //'submitted_by' => $joke['user_id'],
+            //'submitted_by' => User::find($joke['user_id'])
+            //'submitted_by' => $joke['user']['name']
+            //'submitted_by' => $joke['user_id']
+            'user' => $joke['user']
 		];
 	}
 
@@ -29,7 +32,9 @@ class JokesController extends Controller
     {
     	$jokes = Joke::all(); //Not a good idea when database grows up
     	return response()->json([
+            'method' => 'index',
     		'data' => $this->transformCollection($jokes),
+//          'data' => $jokes,
     		'status' => 200
     	]);
     }

@@ -15,8 +15,11 @@ class CreateJakesTable extends Migration
         Schema::create('jokes', function(Blueprint $table){
             $table->increments('id');
             $table->text('body');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
+
+            //foreign key
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -27,6 +30,9 @@ class CreateJakesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('jokes');
+
+        Schema::drop('jokes', function(Blueprint $table){
+            $table->dropForeign(['user_id']);
+        });
     }
 }

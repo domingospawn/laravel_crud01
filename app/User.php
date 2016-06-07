@@ -24,8 +24,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
+    /**
+    * A user can have many jokes
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
     public function jokes()
     {
-        return $this->hasMany('App\Joke');
+//      return $this->hasMany('App\Joke');
+        return $this->hasMany('App\Joke', 'foreign_key', 'user_id');
     }
 }
