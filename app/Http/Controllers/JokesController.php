@@ -13,7 +13,19 @@ class JokesController extends Controller
 {
 	private function transformCollection($jokes)
 	{
-        return array_map([$this, 'transform'], $jokes->toArray());
+        //return array_map([$this, 'transform'], $jokes->toArray());
+        $jokesArray = $jokes->toArray();
+        return [
+            'total' => $jokesArray['total'],
+            'per_page' => intval($jokesArray['per_page']),
+            'current_page' => $jokesArray['current_page'],
+            'last_page' => $jokesArray['last_page'],
+            'next_page_url' => $jokesArray['next_page_url'],
+            'prev_page_url' => $jokesArray['prev_page_url'],
+            'from' => $jokesArray['from'],
+            'to' => $jokesArray['to'],
+            'data' => array_map([$this, 'transform'], $jokesArray['data'])
+        ];
 	}
 
 	private function transform($joke)
@@ -27,13 +39,20 @@ class JokesController extends Controller
 
     public function index()
     {
-    	$jokes = Joke::all(); //Not a good idea when database grows up
+//    	$jokes = Joke::all(); //Not a good idea when database grows up
+        $jokes = Joke::with(
+            array('User'=>function($query){
+                $query->select('id', 'name');
+            })
+        )->select('id', 'body', 'user_id')->paginate(5);
 
-    	return response()->json([
-            'method' => 'index',
-            'status' => 200,
-    		'data' => $this->transformCollection($jokes)
-    	]);
+        return response()->json($this->transformCollection($jokes), 200);
+
+//    	return response()->json([
+//          'method' => 'index',
+//          'status' => 200,
+//    		'data' => $this->transformCollection($jokes)
+//    	]);
     }
 
     public function show($id)
