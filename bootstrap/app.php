@@ -52,4 +52,6 @@ $app->singleton(
 |
 */
 
+//test of configuration of monolog
+
 return $app;

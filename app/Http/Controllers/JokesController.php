@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Requests;
+use Log;
 use App\Joke;
 use App\User;
 
@@ -12,7 +13,7 @@ class JokesController extends Controller
 {
 	private function transformCollection($jokes)
 	{
-		return array_map([$this, 'transform'], $jokes->toArray());
+        return array_map([$this, 'transform'], $jokes->toArray());
 	}
 
 	private function transform($joke)
@@ -20,32 +21,28 @@ class JokesController extends Controller
 		return [
 			'joke_id' => $joke['id'],
 			'joke' => $joke['body'],
-            //'submitted_by' => $joke['user_id'],
-            //'submitted_by' => User::find($joke['user_id'])
-            //'submitted_by' => $joke['user']['name']
-            //'submitted_by' => $joke['user_id']
-            'user' => $joke['user']
+            'submitted_by' => $joke['user']['name']
 		];
 	}
 
     public function index()
     {
     	$jokes = Joke::all(); //Not a good idea when database grows up
+
     	return response()->json([
             'method' => 'index',
-    		'data' => $this->transformCollection($jokes),
-//          'data' => $jokes,
-    		'status' => 200
+            'status' => 200,
+    		'data' => $this->transformCollection($jokes)
     	]);
     }
 
     public function show($id)
-    {
+    {   
         $joke = Joke::with(
             array('User'=>function($query){
                 $query->select('id','name');
             })
-        )->find($id);        
+        )->find($id);
 
     	if(!$joke)
         {
