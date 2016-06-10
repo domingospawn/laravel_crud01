@@ -11,6 +11,11 @@ use App\User;
 
 class JokesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth.basic');
+    }
+
 	private function transformCollection($jokes)
 	{
         //return array_map([$this, 'transform'], $jokes->toArray());
@@ -37,22 +42,38 @@ class JokesController extends Controller
 		];
 	}
 
-    public function index()
+    public function index(Request $request)
     {
-//    	$jokes = Joke::all(); //Not a good idea when database grows up
-        $jokes = Joke::with(
-            array('User'=>function($query){
-                $query->select('id', 'name');
-            })
-        )->select('id', 'body', 'user_id')->paginate(5);
+        $search_term = $request->input('search');
+        $limit = $request->input('limit')?$request->input('limit'):5;
+
+        if($search_term)
+        {
+            $jokes = Joke::orderBy('id', 'DESC')->where('body', 'LIKE', "%$search_term%")->with(
+                    array('User'=> function($query){
+                        $query->select('id','name');
+                    })
+                )->select('id', 'body', 'user_id')->paginate($limit);
+
+            $jokes->appends(array(
+                'search'=> $search_term,
+                'limit' => $limit
+            ));
+        }
+        else
+        {
+            $jokes = Joke::orderBy('id', 'DESC')->with(
+                array('User' => function($query){
+                    $query->select('id', 'name');
+                })
+            )->select('id', 'body', 'user_id')->paginate($limit);
+
+            $jokes->appends(array(
+                'limit' => $limit
+            ));
+        }
 
         return response()->json($this->transformCollection($jokes), 200);
-
-//    	return response()->json([
-//          'method' => 'index',
-//          'status' => 200,
-//    		'data' => $this->transformCollection($jokes)
-//    	]);
     }
 
     public function show($id)
