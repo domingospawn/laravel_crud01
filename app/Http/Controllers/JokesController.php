@@ -13,7 +13,8 @@ class JokesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth.basic');
+//      $this->middleware('auth.basic');
+      $this->middleware('jwt.auth');
     }
 
 	private function transformCollection($jokes)
@@ -77,7 +78,7 @@ class JokesController extends Controller
     }
 
     public function show($id)
-    {   
+    {
         $joke = Joke::with(
             array('User'=>function($query){
                 $query->select('id','name');
