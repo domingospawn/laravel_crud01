@@ -156,6 +156,10 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        /*
+        * Authentication
+        */
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 
     ],
